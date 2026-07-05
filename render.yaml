@@ -1,11 +1,11 @@
-services:
+databases:
   # ─── PostgreSQL Database ─────────────────────────────────────
-  - type: psql
-    name: djs-postgres
+  - name: djs-postgres
     databaseName: distributed_job_scheduler
     user: djs_user
     plan: free
 
+services:
   # ─── Redis Cache ─────────────────────────────────────────────
   - type: redis
     name: djs-redis
