@@ -71,7 +71,3 @@ Extensive documentation is available in the [`docs`](docs) directory:
 - **WebSocket Wiring:** While the WebSocket `ConnectionManager` exists, service-layer operations (job creation, completion) do not yet broadcast events to it.
 - **Rate Limiting:** Queue-level rate limiting (`rate_limit_per_second`) is defined in the schema but not currently enforced during claiming.
 - **Idempotency Key Expiration:** Idempotency keys never expire, meaning you cannot reuse a key even after the original job has fully completed.
-
-## License
-
-*(Add license information here)*
