@@ -1,0 +1,89 @@
+services:
+  # ─── PostgreSQL Database ─────────────────────────────────────
+  - type: psql
+    name: djs-postgres
+    databaseName: distributed_job_scheduler
+    user: djs_user
+    plan: free
+
+  # ─── Redis Cache ─────────────────────────────────────────────
+  - type: redis
+    name: djs-redis
+    plan: free
+    ipAllowList: [] # Deny external access for security
+
+  # ─── Backend API ─────────────────────────────────────────────
+  - type: web
+    name: djs-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "cd backend && pip install -r requirements.txt && alembic upgrade head"
+    startCommand: "cd backend && uvicorn src.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: djs-postgres
+          property: connectionString
+      - key: DATABASE_URL_SYNC
+        fromDatabase:
+          name: djs-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: djs-redis
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+
+  # ─── Background Worker ───────────────────────────────────────
+  - type: worker
+    name: djs-worker
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "cd backend && pip install -r requirements.txt"
+    startCommand: "cd backend && python -m src.workers.engine"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: djs-postgres
+          property: connectionString
+      - key: DATABASE_URL_SYNC
+        fromDatabase:
+          name: djs-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: djs-redis
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        fromService:
+          type: web
+          name: djs-api
+          envVarKey: JWT_SECRET_KEY
+      - key: WORKER_CONCURRENCY
+        value: "10"
+      - key: WORKER_QUEUES
+        value: "default"
+      - key: ENVIRONMENT
+        value: production
+
+  # ─── Frontend Dashboard (React + Vite) ───────────────────────
+  - type: web
+    name: djs-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: djs-api
+          property: host
