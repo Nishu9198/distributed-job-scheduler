@@ -45,14 +45,14 @@ make seed
 
 ## Documentation
 
-Extensive documentation is available in the [`/docs`](./docs) directory:
+Extensive documentation is available in the [`docs`](docs) directory:
 
-- [**Architecture**](./docs/ARCHITECTURE.md) - System architecture and job flow diagrams, design trade-offs.
-- [**ER Diagram**](./docs/ER_DIAGRAM.md) - Full database schema, constraints, indexes, and cascading logic.
-- [**API Documentation**](./docs/API_DOCUMENTATION.md) - Comprehensive REST endpoint references.
-- [**Design Decisions**](./docs/DESIGN_DECISIONS.md) - Deep dive into atomic claiming, retries, and architectural choices.
-- [**Setup Guide**](./docs/SETUP.md) - Detailed manual and Docker setup instructions.
-- [**Testing**](./docs/TESTING.md) - Overview of the test suite and coverage.
+- [**Architecture**](docs/ARCHITECTURE.md) - System architecture and job flow diagrams, design trade-offs.
+- [**ER Diagram**](docs/ER_DIAGRAM.md) - Full database schema, constraints, indexes, and cascading logic.
+- [**API Documentation**](docs/API_DOCUMENTATION.md) - Comprehensive REST endpoint references.
+- [**Design Decisions**](docs/DESIGN_DECISIONS.md) - Deep dive into atomic claiming, retries, and architectural choices.
+- [**Setup Guide**](docs/SETUP.md) - Detailed manual and Docker setup instructions.
+- [**Testing**](docs/TESTING.md) - Overview of the test suite and coverage.
 
 ## Project Structure
 
